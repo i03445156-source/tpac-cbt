@@ -575,7 +575,10 @@ function selectAnswer(selected, correct, qi) {
   if (isCorrect) score++;
 
   btns[selected-1].classList.add(isCorrect ? 'correct' : 'wrong');
-  if (!isCorrect) btns[correct-1].classList.add('show-correct');
+  if (!isCorrect) {
+    btns[correct-1].classList.add('show-correct');
+    gtag('event', 'wrong_answer', { question_number: qi + 1 });
+  }
 
   const expEl = document.getElementById('explanation');
   expEl.innerHTML = `<strong>${isCorrect ? '✓ 정답!' : '✗ 오답'}</strong> 정답: ${['①','②','③','④'][correct-1]}<br><br>${questions[qi][4]}`;
