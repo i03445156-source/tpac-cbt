@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TPAC 자금세탁방지 CBT</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-67WB2B9T2B"></script>
 <script>
@@ -139,6 +140,23 @@
   .concept-section h4 { font-size: 0.95rem; color: #1a365d; background: #ebf8ff; padding: 8px 14px; border-radius: 8px; margin: 20px 0 10px; }
   .concept-btn { background: #2c5282; color: #fff; border: none; padding: 12px 28px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s; margin-top: 8px; }
   .concept-btn:hover { background: #1a365d; }
+  .stats-btn { background: #e53e3e; color: #fff; border: none; padding: 12px 28px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s; margin-top: 8px; margin-left: 8px; }
+  .stats-btn:hover { background: #c53030; }
+  #stats-screen { max-width: 800px; margin: 0 auto; padding: 20px; }
+  .stats-nav { background: #1a365d; color: #fff; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; }
+  .stats-nav h2 { font-size: 1.2rem; margin: 0; }
+  .stats-nav button { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+  .stats-nav button:hover { background: rgba(255,255,255,0.3); }
+  .stats-body { background: #fff; border-radius: 0 0 12px 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  .stat-item { display: flex; align-items: center; gap: 15px; padding: 14px; border-bottom: 1px solid #e2e8f0; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-rank { font-size: 1.4rem; font-weight: bold; color: #3182ce; min-width: 36px; text-align: center; }
+  .stat-rank.top3 { color: #e53e3e; }
+  .stat-info { flex: 1; }
+  .stat-qnum { font-size: 0.85rem; color: #718096; font-weight: bold; }
+  .stat-qtext { font-size: 0.9rem; color: #2d3748; margin-top: 3px; line-height: 1.4; }
+  .stat-count { background: #fff5f5; color: #e53e3e; font-weight: bold; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; }
+  .stats-loading { text-align: center; padding: 40px; color: #718096; font-size: 1rem; }
 </style>
 </head>
 <body>
@@ -160,6 +178,18 @@
   </div>
   <button class="start-btn" onclick="startQuiz()">시험 시작</button>
   <br><button class="concept-btn" onclick="showConceptScreen()">핵심 개념 정리 보기</button>
+  <button class="stats-btn" onclick="showStats()">🔥 자주 틀리는 문제 TOP 10</button>
+</div>
+
+<!-- STATS SCREEN -->
+<div id="stats-screen" class="hidden">
+  <div class="stats-nav">
+    <h2>🔥 자주 틀리는 문제 TOP 10</h2>
+    <button onclick="hideStats()">← 돌아가기</button>
+  </div>
+  <div class="stats-body" id="stats-body">
+    <div class="stats-loading">불러오는 중...</div>
+  </div>
 </div>
 
 <!-- CONCEPT SCREEN -->
@@ -578,6 +608,7 @@ function selectAnswer(selected, correct, qi) {
   if (!isCorrect) {
     btns[correct-1].classList.add('show-correct');
     gtag('event', 'wrong_answer', { question_number: qi + 1 });
+    recordWrong(qi + 1);
   }
 
   const expEl = document.getElementById('explanation');
@@ -674,6 +705,55 @@ function switchTab(tabId, btn) {
   document.querySelectorAll('.concept-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
+}
+
+const SUPABASE_URL = 'https://xzxgrbkblgxdeumspmsc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__OrUMm5v8YWU9ePqHHN41A_C4w5QK97';
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function recordWrong(questionNumber) {
+  try {
+    await sbClient.rpc('increment_wrong', { q_id: questionNumber });
+  } catch(e) {}
+}
+
+async function showStats() {
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('stats-screen').classList.remove('hidden');
+  document.getElementById('stats-body').innerHTML = '<div class="stats-loading">불러오는 중...</div>';
+  window.scrollTo(0, 0);
+
+  const { data, error } = await sbClient
+    .from('wrong_answers')
+    .select('*')
+    .order('wrong_count', { ascending: false })
+    .limit(10);
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('stats-body').innerHTML = '<div class="stats-loading">아직 데이터가 없습니다.<br>문제를 풀면 통계가 쌓여요!</div>';
+    return;
+  }
+
+  const html = data.map((row, idx) => {
+    const q = questions[row.question_id - 1];
+    const qText = q ? q[1].replace(/<[^>]*>/g, '').substring(0, 60) + '...' : '';
+    const rankClass = idx < 3 ? 'stat-rank top3' : 'stat-rank';
+    return `<div class="stat-item">
+      <div class="${rankClass}">${idx + 1}</div>
+      <div class="stat-info">
+        <div class="stat-qnum">${row.question_id <= 100 ? (row.question_id <= 50 ? '1회 ' : '1회 ') : ''}문제 ${row.question_id}번</div>
+        <div class="stat-qtext">${qText}</div>
+      </div>
+      <div class="stat-count">${row.wrong_count}회 오답</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('stats-body').innerHTML = html;
+}
+
+function hideStats() {
+  document.getElementById('stats-screen').classList.add('hidden');
+  document.getElementById('start-screen').classList.remove('hidden');
 }
 </script>
 </body>
