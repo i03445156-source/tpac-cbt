@@ -160,6 +160,28 @@
   .stat-count { background: #fff5f5; color: #e53e3e; font-weight: bold; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; }
   .stats-loading { text-align: center; padding: 40px; color: #718096; font-size: 1rem; }
 
+  /* LOGIN */
+  .login-area { max-width: 620px; margin: 20px auto 0; text-align: center; }
+  .google-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; border: 1.5px solid #d1d5db; color: #374151;
+    padding: 10px 20px; border-radius: 8px; font-size: 0.95rem;
+    cursor: pointer; font-weight: bold; transition: box-shadow 0.15s;
+  }
+  .google-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .google-btn svg { width: 18px; height: 18px; }
+  .login-hint { font-size: 0.82rem; color: #718096; margin-top: 6px; }
+  .user-bar {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #f0fff4; border: 1.5px solid #68d391; border-radius: 8px;
+    padding: 8px 16px; font-size: 0.88rem; color: #276749;
+  }
+  .user-bar button {
+    background: none; border: 1px solid #68d391; color: #276749;
+    border-radius: 6px; padding: 3px 10px; cursor: pointer; font-size: 0.82rem;
+  }
+  .sync-badge { font-size: 0.78rem; background: #38a169; color: #fff; border-radius: 10px; padding: 1px 7px; }
+
   /* CERT TABLE */
   .cert-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 0.85rem; }
   .cert-table th { background: #ebf8ff; color: #2b6cb0; font-weight: bold; border: 1px solid #e2e8f0; padding: 9px 10px; text-align: center; }
@@ -195,6 +217,23 @@
   <div class="disclaimer">
     본 문제는 AI로 생성한 비공식 연습문제입니다. TPAC(자금세탁방지 업무능력 검정시험)은 한국금융연수원(KBI)에서 주관하는 시험이며, 본 자료는 한국금융연수원과 아무런 관련이 없습니다. 실제 기출문제가 아닙니다.<br><br>
     문제 오류 제보: <a href="mailto:lsj001220@knu.ac.kr">lsj001220@knu.ac.kr</a>
+  </div>
+
+  <div class="login-area">
+    <div id="login-btn-area">
+      <button class="google-btn" onclick="loginWithGoogle()">
+        <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google로 로그인
+      </button>
+      <p class="login-hint">로그인하면 오답이 기기를 바꿔도 유지됩니다</p>
+    </div>
+    <div id="user-info-area" class="hidden">
+      <div class="user-bar">
+        <span>✓ <span id="user-email-display"></span></span>
+        <span class="sync-badge" id="sync-badge">오답 동기화 중...</span>
+        <button onclick="logout()">로그아웃</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -736,6 +775,8 @@ function showResult() {
   const correctOnes = results.filter(r=>r.isCorrect).map(r=>r.qi);
   wrongAnswers = wrongAnswers.filter(i=>!correctOnes.includes(i));
   localStorage.setItem('tpac_wrong', JSON.stringify(wrongAnswers));
+  saveUserWrongs(newWrong);
+  removeUserWrongs(correctOnes);
 
   const total = questionList.length;
   const pct = Math.round((score/total)*100);
@@ -812,6 +853,76 @@ function switchTab(tabId, btn) {
 const SUPABASE_URL = 'https://xzxgrbkblgxdeumspmsc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__OrUMm5v8YWU9ePqHHN41A_C4w5QK97';
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── AUTH ──────────────────────────────────────────────
+let currentUser = null;
+
+sbClient.auth.onAuthStateChange(async (event, session) => {
+  currentUser = session?.user ?? null;
+  updateLoginUI();
+  if (currentUser && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
+    await syncWrongAnswers();
+  }
+});
+
+function updateLoginUI() {
+  const btnArea  = document.getElementById('login-btn-area');
+  const userArea = document.getElementById('user-info-area');
+  if (!btnArea || !userArea) return;
+  if (currentUser) {
+    btnArea.classList.add('hidden');
+    userArea.classList.remove('hidden');
+    document.getElementById('user-email-display').textContent = currentUser.email;
+  } else {
+    btnArea.classList.remove('hidden');
+    userArea.classList.add('hidden');
+  }
+}
+
+async function loginWithGoogle() {
+  await sbClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+}
+
+async function logout() {
+  await sbClient.auth.signOut();
+}
+
+async function syncWrongAnswers() {
+  const badge = document.getElementById('sync-badge');
+  if (badge) badge.textContent = '동기화 중...';
+  try {
+    const { data } = await sbClient
+      .from('user_wrong_answers')
+      .select('question_id')
+      .eq('user_id', currentUser.id);
+    const serverWrongs = (data || []).map(r => r.question_id - 1);
+    wrongAnswers = [...new Set([...wrongAnswers, ...serverWrongs])];
+    localStorage.setItem('tpac_wrong', JSON.stringify(wrongAnswers));
+    if (badge) badge.textContent = `오답 ${wrongAnswers.length}개 동기화됨`;
+  } catch(e) {
+    if (badge) badge.textContent = '동기화 실패';
+  }
+}
+
+async function saveUserWrongs(qiList) {
+  if (!currentUser || qiList.length === 0) return;
+  await sbClient.from('user_wrong_answers').upsert(
+    qiList.map(qi => ({ user_id: currentUser.id, question_id: qi + 1 })),
+    { onConflict: 'user_id,question_id' }
+  );
+}
+
+async function removeUserWrongs(qiList) {
+  if (!currentUser || qiList.length === 0) return;
+  await sbClient.from('user_wrong_answers')
+    .delete()
+    .eq('user_id', currentUser.id)
+    .in('question_id', qiList.map(qi => qi + 1));
+}
+// ─────────────────────────────────────────────────────
 
 async function recordWrong(questionNumber) {
   try {
