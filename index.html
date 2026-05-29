@@ -949,7 +949,7 @@ async function showStats() {
 
   const html = data.map((row, idx) => {
     const q = questions[row.question_id - 1];
-    const qText = q ? q[1].replace(/<[^>]*>/g, '').substring(0, 60) + '...' : '';
+    const qText = q ? q[1].replace(/<[^>]*>/g, '') : '';
     const rankClass = idx < 3 ? 'stat-rank top3' : 'stat-rank';
     return `<div class="stat-item">
       <div class="${rankClass}">${idx + 1}</div>
