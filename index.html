@@ -662,13 +662,11 @@
   <div style="font-size:0.88rem;color:var(--text-muted);margin-bottom:20px;">문제 오류 제보, 개선 건의, 자유로운 의견을 남겨주세요.</div>
 
   <div class="comment-input-box">
-    <div id="comment-form-area">
-      <textarea id="comment-input" placeholder="건의사항이나 의견을 입력해주세요..."></textarea>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <button class="comment-submit" id="comment-submit-btn" onclick="submitComment(null)">등록</button>
-        <span id="comment-login-notice" class="comment-login-notice"></span>
-      </div>
-    </div>
+    <input id="comment-nick-input" type="text" placeholder="닉네임 (선택, 비워두면 익명)" maxlength="20"
+      style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:0.88rem;font-family:inherit;outline:none;color:var(--text);margin-bottom:8px;"
+      onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='var(--border)'">
+    <textarea id="comment-input" placeholder="건의사항이나 의견을 입력해주세요..."></textarea>
+    <button class="comment-submit" id="comment-submit-btn" onclick="submitComment(null)">등록</button>
   </div>
 
   <div class="comment-list" id="comment-list">
@@ -1041,8 +1039,11 @@ function showResult() {
     <button class="review-btn" onclick="showReview()">오답 복습</button>
     <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:20px;">
       <div style="font-size:0.88rem;font-weight:700;color:var(--text);margin-bottom:10px;">한마디 남기기</div>
+      <input id="result-nick-input" type="text" placeholder="닉네임 (선택, 비워두면 익명)" maxlength="20"
+        style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:0.88rem;font-family:inherit;outline:none;color:var(--text);margin-bottom:8px;"
+        onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='var(--border)'">
       <textarea id="result-comment-input" placeholder="사이트에 대한 의견이나 건의사항을 남겨주세요..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:0.88rem;font-family:inherit;resize:none;height:72px;outline:none;color:var(--text);" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='var(--border)'"></textarea>
-      <button class="comment-submit" style="margin-top:8px;" onclick="submitComment(null, 'result-comment-input')">등록</button>
+      <button class="comment-submit" style="margin-top:8px;" onclick="submitComment(null, 'result-comment-input', 'result-nick-input')">등록</button>
     </div>
   `;
 }
@@ -1097,8 +1098,6 @@ function navTo(name) {
     document.getElementById('feedback-screen').classList.remove('hidden');
     window.scrollTo(0,0);
     loadComments();
-    const notice = document.getElementById('comment-login-notice');
-    if (notice) notice.textContent = currentUser ? '' : '※ 작성하려면 로그인이 필요해요.';
   }
 }
 
@@ -1286,21 +1285,23 @@ async function loadComments() {
   }).join('');
 }
 
-async function submitComment(questionId, inputId = 'comment-input') {
-  if (!currentUser) { alert('로그인 후 작성할 수 있어요.'); return; }
+async function submitComment(questionId, inputId = 'comment-input', nickInputId = 'comment-nick-input') {
   const input = document.getElementById(inputId);
+  const nickInput = document.getElementById(nickInputId);
   const content = input?.value.trim();
   if (!content) { alert('내용을 입력해주세요.'); return; }
+  const nickname = nickInput?.value.trim() || '익명';
   const btn = document.getElementById('comment-submit-btn');
   if (btn) btn.disabled = true;
-  const nickname = currentUser.email.split('@')[0];
   const { error } = await sbClient.from('comments').insert({
-    user_id: currentUser.id, nickname, content,
+    user_id: currentUser?.id || null,
+    nickname, content,
     question_id: questionId || null
   });
   if (btn) btn.disabled = false;
-  if (error) { alert('등록에 실패했어요.'); return; }
+  if (error) { alert('등록에 실패했어요. 잠시 후 다시 시도해주세요.'); return; }
   if (input) input.value = '';
+  if (nickInput) nickInput.value = '';
   if (inputId === 'comment-input') loadComments();
   else alert('의견을 남겨주셨어요! 감사합니다 😊');
 }
