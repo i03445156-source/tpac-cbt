@@ -14,235 +14,328 @@
   gtag('config', 'G-67WB2B9T2B');
 </script>
 <style>
+  :root {
+    --bg: #f1f5f9;
+    --nav: #0f172a;
+    --nav-border: #1e293b;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --success: #059669;
+    --success-bg: #ecfdf5;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --warn: #d97706;
+    --warn-bg: #fffbeb;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-sm: 0 1px 6px rgba(0,0,0,0.06);
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Malgun Gothic', sans-serif; background: #f0f4f8; min-height: 100vh; }
+  body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); }
 
-  #start-screen, #quiz-screen, #result-screen {
-    max-width: 800px; margin: 0 auto; padding: 20px;
+  /* ── NAVBAR ─────────────────────────── */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav); border-bottom: 1px solid var(--nav-border);
+    height: 58px; display: flex; align-items: center; gap: 8px; padding: 0 20px;
+  }
+  .nav-brand {
+    font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;
+    margin-right: 16px; white-space: nowrap;
+  }
+  .nav-brand span { color: #60a5fa; }
+  .nav-links { display: flex; gap: 4px; flex: 1; }
+  .nav-link {
+    background: none; border: none; color: rgba(255,255,255,0.6);
+    padding: 7px 14px; border-radius: 8px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 600; transition: all 0.15s; white-space: nowrap;
+    font-family: inherit;
+  }
+  .nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-link.active { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .nav-auth { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .nav-google-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85); padding: 6px 14px; border-radius: 8px;
+    cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: all 0.15s;
+    font-family: inherit;
+  }
+  .nav-google-btn:hover { background: rgba(255,255,255,0.12); }
+  .nav-google-btn svg { width: 15px; height: 15px; }
+  .nav-user {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: rgba(255,255,255,0.7);
+  }
+  .nav-user-email { color: #93c5fd; font-weight: 600; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nav-sync { font-size: 0.72rem; background: #059669; color: #fff; border-radius: 10px; padding: 2px 7px; }
+  .nav-logout {
+    background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+    border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.78rem; font-family: inherit;
+  }
+  .nav-logout:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+  /* mobile hamburger */
+  .nav-hamburger { display: none; background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; margin-left: 8px; }
+  .nav-mobile-menu {
+    display: none; position: fixed; top: 58px; left: 0; right: 0; z-index: 99;
+    background: #0f172a; border-bottom: 1px solid #1e293b; padding: 12px 16px; flex-direction: column; gap: 4px;
+  }
+  .nav-mobile-menu.open { display: flex; }
+  .nav-mobile-menu .nav-link { text-align: left; padding: 10px 14px; font-size: 0.95rem; }
+
+  @media (max-width: 680px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: block; }
+    .nav-user-email { max-width: 100px; }
   }
 
-  /* START */
-  #start-screen { text-align: center; padding-top: 80px; }
-  #start-screen h1 { font-size: 2rem; color: #1a365d; margin-bottom: 10px; }
-  #start-screen p { color: #4a5568; margin-bottom: 30px; font-size: 1.1rem; }
-  .mode-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  /* ── SCREENS ─────────────────────────── */
+  .screen { max-width: 820px; margin: 0 auto; padding: 24px 16px 40px; padding-top: 82px; }
+  .hidden { display: none; }
+
+  /* ── START SCREEN ────────────────────── */
+  .start-hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+    border-radius: var(--radius); padding: 36px 28px; color: #fff; margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(30,64,175,0.25);
+  }
+  .start-hero h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .start-hero p { color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.6; }
+
+  .exam-group { margin-bottom: 20px; }
+  .exam-group-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+  .mode-btns { display: flex; gap: 10px; flex-wrap: wrap; }
   .mode-btn {
-    background: #fff; border: 2px solid #3182ce; color: #3182ce;
-    padding: 15px 25px; border-radius: 10px; cursor: pointer;
-    font-size: 1rem; font-weight: bold; transition: all 0.2s;
+    background: var(--card); border: 2px solid var(--border); color: var(--text-muted);
+    padding: 10px 18px; border-radius: 10px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 700; transition: all 0.15s; font-family: inherit;
   }
-  .mode-btn:hover, .mode-btn.active { background: #3182ce; color: #fff; }
+  .mode-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .mode-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 3px 10px rgba(37,99,235,0.3); }
+
+  .start-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: center; flex-wrap: wrap; }
   .start-btn {
-    background: #1a365d; color: #fff; border: none;
-    padding: 18px 60px; border-radius: 12px; font-size: 1.2rem;
-    cursor: pointer; transition: background 0.2s;
+    background: var(--primary); color: #fff; border: none;
+    padding: 14px 48px; border-radius: 12px; font-size: 1.05rem;
+    font-weight: 700; cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35); font-family: inherit;
   }
-  .start-btn:hover { background: #2c5282; }
+  .start-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
 
-  /* HEADER */
-  .quiz-header { background: #1a365d; color: #fff; padding: 15px 20px; border-radius: 12px 12px 0 0; }
+  .disclaimer {
+    background: var(--warn-bg); border: 1px solid #fde68a; border-radius: 10px;
+    padding: 14px 18px; font-size: 0.8rem; color: #92400e; line-height: 1.7; margin-top: 20px;
+  }
+  .disclaimer a { color: var(--warn); }
+
+  /* ── QUIZ HEADER ─────────────────────── */
+  .quiz-header {
+    background: linear-gradient(135deg, #0f172a, #1e3a5f);
+    color: #fff; padding: 16px 20px; border-radius: var(--radius) var(--radius) 0 0;
+  }
   .quiz-header .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .section-badge { background: #3182ce; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
-  .score-info { font-size: 0.9rem; }
-  .progress-bar-wrap { background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; }
-  .progress-bar { background: #68d391; height: 8px; border-radius: 10px; transition: width 0.3s; }
-  .q-counter { font-size: 0.85rem; margin-top: 5px; text-align: right; }
+  .section-badge { background: rgba(96,165,250,0.25); border: 1px solid rgba(96,165,250,0.4); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; color: #93c5fd; font-weight: 600; }
+  .score-info { font-size: 0.88rem; color: rgba(255,255,255,0.8); }
+  .progress-bar-wrap { background: rgba(255,255,255,0.15); border-radius: 10px; height: 6px; }
+  .progress-bar { background: #34d399; height: 6px; border-radius: 10px; transition: width 0.3s; }
+  .q-counter { font-size: 0.82rem; margin-top: 6px; text-align: right; color: rgba(255,255,255,0.6); }
 
-  /* CARD */
-  .quiz-card { background: #fff; border-radius: 0 0 12px 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-  .q-number { font-size: 0.85rem; color: #718096; margin-bottom: 8px; font-weight: bold; }
-  .q-text { font-size: 1.05rem; line-height: 1.7; color: #2d3748; margin-bottom: 25px; }
+  /* ── QUIZ CARD ───────────────────────── */
+  .quiz-card { background: var(--card); border-radius: 0 0 var(--radius) var(--radius); padding: 28px; box-shadow: var(--shadow); }
+  .q-number { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; letter-spacing: 0.03em; }
+  .q-text { font-size: 1rem; line-height: 1.75; color: var(--text); margin-bottom: 22px; }
 
-  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choices { display: flex; flex-direction: column; gap: 9px; }
   .choice-btn {
     display: flex; align-items: flex-start; gap: 12px;
-    background: #f7fafc; border: 2px solid #e2e8f0;
-    border-radius: 10px; padding: 14px 16px;
-    cursor: pointer; text-align: left; font-size: 0.95rem;
-    color: #2d3748; transition: all 0.15s; line-height: 1.5;
+    background: #f8fafc; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 13px 16px;
+    cursor: pointer; text-align: left; font-size: 0.92rem;
+    color: var(--text); transition: all 0.12s; line-height: 1.55; font-family: inherit;
   }
-  .choice-btn:hover:not(:disabled) { border-color: #3182ce; background: #ebf8ff; }
-  .choice-btn .num { font-weight: bold; min-width: 20px; color: #3182ce; }
-  .choice-btn.correct { border-color: #38a169; background: #f0fff4; color: #276749; }
-  .choice-btn.correct .num { color: #38a169; }
-  .choice-btn.wrong { border-color: #e53e3e; background: #fff5f5; color: #9b2c2c; }
-  .choice-btn.wrong .num { color: #e53e3e; }
-  .choice-btn.show-correct { border-color: #38a169; background: #f0fff4; }
+  .choice-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn .num { font-weight: 800; min-width: 20px; color: var(--primary); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-bg); color: #065f46; }
+  .choice-btn.correct .num { color: var(--success); }
+  .choice-btn.wrong { border-color: var(--danger); background: var(--danger-bg); color: #7f1d1d; }
+  .choice-btn.wrong .num { color: var(--danger); }
+  .choice-btn.show-correct { border-color: var(--success); background: var(--success-bg); }
   .choice-btn:disabled { cursor: default; }
 
   .explanation {
-    margin-top: 20px; background: #fffde7; border-left: 4px solid #f6ad55;
-    padding: 14px 16px; border-radius: 0 8px 8px 0;
-    font-size: 0.9rem; line-height: 1.6; color: #744210; display: none;
+    margin-top: 18px; background: var(--warn-bg); border-left: 4px solid #f59e0b;
+    padding: 14px 16px; border-radius: 0 10px 10px 0;
+    font-size: 0.88rem; line-height: 1.65; color: #78350f; display: none;
   }
   .explanation.show { display: block; }
-  .explanation strong { color: #c05621; }
+  .explanation strong { color: #b45309; }
 
   .next-btn {
-    margin-top: 20px; width: 100%; background: #3182ce; color: #fff;
-    border: none; padding: 14px; border-radius: 10px;
-    font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s;
-    display: none;
+    margin-top: 18px; width: 100%; background: var(--primary); color: #fff;
+    border: none; padding: 13px; border-radius: 10px;
+    font-size: 0.97rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
+    display: none; font-family: inherit;
   }
   .next-btn.show { display: block; }
-  .next-btn:hover { background: #2c5282; }
+  .next-btn:hover { background: var(--primary-dark); }
 
-  /* RESULT */
-  #result-screen { text-align: center; padding-top: 40px; }
-  .result-card { background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-  .result-score { font-size: 4rem; font-weight: bold; color: #1a365d; }
-  .result-sub { font-size: 1.2rem; color: #4a5568; margin: 10px 0 30px; }
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-  .result-box { background: #f7fafc; border-radius: 10px; padding: 15px; }
-  .result-box .label { font-size: 0.85rem; color: #718096; }
-  .result-box .value { font-size: 1.8rem; font-weight: bold; margin-top: 4px; }
-  .value.green { color: #38a169; }
-  .value.red { color: #e53e3e; }
+  /* ── RESULT ──────────────────────────── */
+  #result-screen { text-align: center; }
+  .result-card { background: var(--card); border-radius: var(--radius); padding: 36px 28px; box-shadow: var(--shadow); }
+  .result-score { font-size: 4rem; font-weight: 800; color: var(--primary); letter-spacing: -2px; }
+  .result-sub { font-size: 1.1rem; color: var(--text-muted); margin: 8px 0 28px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .result-box { background: var(--bg); border-radius: 10px; padding: 14px; }
+  .result-box .label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+  .result-box .value { font-size: 1.7rem; font-weight: 800; margin-top: 4px; }
+  .value.green { color: var(--success); }
+  .value.red { color: var(--danger); }
   .restart-btn {
-    background: #1a365d; color: #fff; border: none;
-    padding: 15px 50px; border-radius: 12px; font-size: 1.1rem;
-    cursor: pointer; margin: 5px;
+    background: var(--primary); color: #fff; border: none;
+    padding: 13px 40px; border-radius: 12px; font-size: 1rem;
+    font-weight: 700; cursor: pointer; margin: 5px; transition: all 0.15s; font-family: inherit;
   }
+  .restart-btn:hover { background: var(--primary-dark); }
   .review-btn {
-    background: #fff; color: #1a365d; border: 2px solid #1a365d;
-    padding: 15px 50px; border-radius: 12px; font-size: 1.1rem;
-    cursor: pointer; margin: 5px;
+    background: #fff; color: var(--primary); border: 2px solid var(--primary);
+    padding: 13px 40px; border-radius: 12px; font-size: 1rem;
+    font-weight: 700; cursor: pointer; margin: 5px; transition: all 0.15s; font-family: inherit;
   }
+  .review-btn:hover { background: var(--primary-light); }
 
-  /* REVIEW */
-  .review-item { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .review-item .ri-q { font-size: 0.95rem; color: #2d3748; margin-bottom: 10px; line-height: 1.6; }
-  .review-item .ri-status { font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; }
-  .ri-status.correct { color: #38a169; }
-  .ri-status.wrong { color: #e53e3e; }
-  .ri-exp { font-size: 0.85rem; color: #744210; background: #fffde7; padding: 10px; border-radius: 6px; line-height: 1.6; }
-  .back-btn { background: #3182ce; color: #fff; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1rem; margin-bottom: 20px; }
+  /* ── REVIEW ──────────────────────────── */
+  .review-item { background: var(--card); border-radius: 10px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .review-item .ri-q { font-size: 0.92rem; color: var(--text); margin-bottom: 10px; line-height: 1.65; }
+  .review-item .ri-status { font-size: 0.83rem; font-weight: 700; margin-bottom: 7px; }
+  .ri-status.correct { color: var(--success); }
+  .ri-status.wrong { color: var(--danger); }
+  .ri-exp { font-size: 0.83rem; color: #78350f; background: var(--warn-bg); padding: 10px 12px; border-radius: 8px; line-height: 1.65; }
+  .back-btn { background: var(--primary); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 0.92rem; margin-bottom: 18px; font-family: inherit; font-weight: 600; }
 
-  .hidden { display: none; }
-
-  /* CONCEPT SCREEN */
-  #concept-screen { max-width: 800px; margin: 0 auto; padding: 20px; }
-  .concept-nav { background: #1a365d; color: #fff; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; }
-  .concept-nav h2 { font-size: 1.2rem; margin: 0; }
-  .concept-nav button { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
-  .concept-nav button:hover { background: rgba(255,255,255,0.3); }
-  .concept-tabs { display: flex; background: #2c5282; }
-  .concept-tab { flex: 1; padding: 12px; border: none; background: transparent; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: all 0.2s; }
-  .concept-tab.active { background: #fff; color: #1a365d; }
-  .concept-body { background: #fff; border-radius: 0 0 12px 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-height: 70vh; overflow-y: auto; }
+  /* ── CONCEPT SCREEN ──────────────────── */
+  #concept-screen { max-width: 820px; margin: 0 auto; padding: 24px 16px 40px; padding-top: 82px; }
+  .concept-tabs { display: flex; background: #1e293b; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; }
+  .concept-tab { flex: 1; padding: 13px 8px; border: none; background: transparent; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.88rem; font-weight: 700; transition: all 0.15s; font-family: inherit; }
+  .concept-tab:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+  .concept-tab.active { background: var(--card); color: var(--primary); }
+  .concept-body { background: var(--card); border-radius: 0 0 var(--radius) var(--radius); padding: 24px; box-shadow: var(--shadow); max-height: 72vh; overflow-y: auto; }
   .concept-section { display: none; }
   .concept-section.active { display: block; }
-  .concept-item { background: #f7fafc; border-left: 4px solid #3182ce; padding: 11px 15px; margin-bottom: 10px; border-radius: 0 8px 8px 0; font-size: 0.9rem; line-height: 1.65; color: #2d3748; }
-  .concept-item b { color: #2c5282; }
-  .concept-item .hl { color: #c05621; font-weight: bold; }
-  .concept-item.sub { border-color: #68d391; background: #f0fff4; }
-  .concept-item.warn { border-color: #f6ad55; background: #fffde7; }
-  .concept-section h4 { font-size: 0.95rem; color: #1a365d; background: #ebf8ff; padding: 8px 14px; border-radius: 8px; margin: 20px 0 10px; }
-  .concept-btn { background: #2c5282; color: #fff; border: none; padding: 12px 28px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s; margin-top: 8px; }
-  .concept-btn:hover { background: #1a365d; }
-  .stats-btn { background: #e53e3e; color: #fff; border: none; padding: 12px 28px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background 0.2s; margin-top: 8px; margin-left: 8px; }
-  .stats-btn:hover { background: #c53030; }
-  .disclaimer { max-width: 620px; margin: 28px auto 0; background: #fffde7; border: 1px solid #f6e05e; border-radius: 10px; padding: 14px 18px; font-size: 0.82rem; color: #744210; line-height: 1.7; text-align: left; }
-  .disclaimer a { color: #c05621; }
-  #stats-screen { max-width: 800px; margin: 0 auto; padding: 20px; }
-  .stats-nav { background: #1a365d; color: #fff; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; }
-  .stats-nav h2 { font-size: 1.2rem; margin: 0; }
-  .stats-nav button { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
-  .stats-nav button:hover { background: rgba(255,255,255,0.3); }
-  .stats-body { background: #fff; border-radius: 0 0 12px 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-  .stat-item { display: flex; align-items: center; gap: 15px; padding: 14px; border-bottom: 1px solid #e2e8f0; }
+  .concept-item { background: #f8fafc; border-left: 4px solid var(--primary); padding: 11px 14px; margin-bottom: 9px; border-radius: 0 8px 8px 0; font-size: 0.88rem; line-height: 1.68; color: var(--text); }
+  .concept-item b { color: #1d4ed8; }
+  .concept-item .hl { color: #b45309; font-weight: 700; }
+  .concept-item.sub { border-color: var(--success); background: var(--success-bg); }
+  .concept-item.warn { border-color: #f59e0b; background: var(--warn-bg); }
+  .concept-section h4 { font-size: 0.82rem; color: var(--primary); background: var(--primary-light); padding: 7px 13px; border-radius: 8px; margin: 20px 0 9px; font-weight: 700; letter-spacing: 0.02em; }
+
+  /* ── STATS SCREEN ────────────────────── */
+  #stats-screen { max-width: 820px; margin: 0 auto; padding: 24px 16px 40px; padding-top: 82px; }
+  .stats-title { font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+  .stats-body { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .stat-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
   .stat-item:last-child { border-bottom: none; }
-  .stat-rank { font-size: 1.4rem; font-weight: bold; color: #3182ce; min-width: 36px; text-align: center; }
-  .stat-rank.top3 { color: #e53e3e; }
+  .stat-rank { font-size: 1.2rem; font-weight: 800; color: var(--primary); min-width: 32px; text-align: center; padding-top: 2px; }
+  .stat-rank.top3 { color: var(--danger); }
   .stat-info { flex: 1; }
-  .stat-qnum { font-size: 0.85rem; color: #718096; font-weight: bold; }
-  .stat-qtext { font-size: 0.9rem; color: #2d3748; margin-top: 3px; line-height: 1.4; }
-  .stat-count { background: #fff5f5; color: #e53e3e; font-weight: bold; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; }
-  .stats-loading { text-align: center; padding: 40px; color: #718096; font-size: 1rem; }
+  .stat-qnum { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
+  .stat-qtext { font-size: 0.88rem; color: var(--text); line-height: 1.55; }
+  .stat-count { background: var(--danger-bg); color: var(--danger); font-weight: 700; padding: 5px 12px; border-radius: 20px; font-size: 0.83rem; white-space: nowrap; flex-shrink: 0; }
+  .stats-loading { text-align: center; padding: 48px; color: var(--text-muted); font-size: 0.95rem; }
 
-  /* LOGIN */
-  .login-area { max-width: 620px; margin: 20px auto 0; text-align: center; }
-  .google-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: #fff; border: 1.5px solid #d1d5db; color: #374151;
-    padding: 10px 20px; border-radius: 8px; font-size: 0.95rem;
-    cursor: pointer; font-weight: bold; transition: box-shadow 0.15s;
-  }
-  .google-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-  .google-btn svg { width: 18px; height: 18px; }
-  .login-hint { font-size: 0.82rem; color: #718096; margin-top: 6px; }
-  .user-bar {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #f0fff4; border: 1.5px solid #68d391; border-radius: 8px;
-    padding: 8px 16px; font-size: 0.88rem; color: #276749;
-  }
-  .user-bar button {
-    background: none; border: 1px solid #68d391; color: #276749;
-    border-radius: 6px; padding: 3px 10px; cursor: pointer; font-size: 0.82rem;
-  }
-  .sync-badge { font-size: 0.78rem; background: #38a169; color: #fff; border-radius: 10px; padding: 1px 7px; }
-
-  /* CERT TABLE */
+  /* ── CERT TABLE ──────────────────────── */
   .cert-table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: 0.85rem; }
-  .cert-table th { background: #ebf8ff; color: #2b6cb0; font-weight: bold; border: 1px solid #e2e8f0; padding: 9px 10px; text-align: center; }
-  .cert-table td { border: 1px solid #e2e8f0; padding: 9px 10px; text-align: center; color: #2d3748; }
-  .cert-table tr:nth-child(even) td { background: #f7fafc; }
+  .cert-table th { background: var(--primary-light); color: var(--primary); font-weight: 700; border: 1px solid var(--border); padding: 9px 10px; text-align: center; }
+  .cert-table td { border: 1px solid var(--border); padding: 9px 10px; text-align: center; color: var(--text); }
+  .cert-table tr:nth-child(even) td { background: #f8fafc; }
   .cert-table td.left { text-align: left; }
-  .badge-done { background: #fff5f5; color: #e53e3e; font-weight: bold; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
-  .badge-open { background: #f0fff4; color: #38a169; font-weight: bold; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
-  .cert-tip { background: #fffde7; border-left: 4px solid #f6ad55; padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 0.85rem; line-height: 1.65; color: #744210; margin-top: 16px; }
-  .cert-tip b { color: #c05621; }
+  .badge-done { background: var(--danger-bg); color: var(--danger); font-weight: 700; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
+  .badge-open { background: var(--success-bg); color: var(--success); font-weight: 700; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
+  .cert-tip { background: var(--warn-bg); border-left: 4px solid #f59e0b; padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 0.85rem; line-height: 1.65; color: #78350f; margin-top: 16px; }
+  .cert-tip b { color: #b45309; }
 </style>
 </head>
 <body>
 
-<!-- START SCREEN -->
-<div id="start-screen">
-  <h1>TPAC 자금세탁방지</h1>
-  <p>자금세탁방지 전문가 시험 대비 CBT<br>총 100문항 · 제1과목(1~50) · 제2과목(51~100)</p>
-  <div class="mode-btns">
-    <button class="mode-btn active" onclick="selectMode('all')">제1회 전체</button>
-    <button class="mode-btn" onclick="selectMode('sub1')">제1회 제1과목</button>
-    <button class="mode-btn" onclick="selectMode('sub2')">제1회 제2과목</button>
-    <button class="mode-btn" onclick="selectMode('wrong')">오답 문제</button>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-brand">TPAC <span>CBT</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" data-nav="start" onclick="navTo('start')">문제 풀기</button>
+    <button class="nav-link" data-nav="concept" onclick="navTo('concept')">개념 정리</button>
+    <button class="nav-link" data-nav="cert" onclick="navToCert()">자격증 안내</button>
+    <button class="nav-link" data-nav="stats" onclick="navTo('stats')">오답 TOP 10</button>
   </div>
-  <div class="mode-btns" style="margin-top:8px;">
-    <button class="mode-btn" onclick="selectMode('exam2')">제2회 전체</button>
-    <button class="mode-btn" onclick="selectMode('exam2sub1')">제2회 제1과목</button>
-    <button class="mode-btn" onclick="selectMode('exam2sub2')">제2회 제2과목</button>
-  </div>
-  <button class="start-btn" onclick="startQuiz()">시험 시작</button>
-  <br><button class="concept-btn" onclick="showConceptScreen()">핵심 개념 정리 보기</button>
-  <button class="stats-btn" onclick="showStats()">🔥 자주 틀리는 문제 TOP 10</button>
-  <div class="disclaimer">
-    본 문제는 AI로 생성한 비공식 연습문제입니다. TPAC(자금세탁방지 업무능력 검정시험)은 한국금융연수원(KBI)에서 주관하는 시험이며, 본 자료는 한국금융연수원과 아무런 관련이 없습니다. 실제 기출문제가 아닙니다.<br><br>
-    문제 오류 제보: <a href="mailto:lsj001220@knu.ac.kr">lsj001220@knu.ac.kr</a>
-  </div>
-
-  <div class="login-area">
+  <div class="nav-auth">
     <div id="login-btn-area">
-      <button class="google-btn" onclick="loginWithGoogle()">
+      <button class="nav-google-btn" onclick="loginWithGoogle()">
         <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google로 로그인
+        로그인
       </button>
-      <p class="login-hint">로그인하면 오답이 기기를 바꿔도 유지됩니다</p>
     </div>
     <div id="user-info-area" class="hidden">
-      <div class="user-bar">
-        <span>✓ <span id="user-email-display"></span></span>
-        <span class="sync-badge" id="sync-badge">오답 동기화 중...</span>
-        <button onclick="logout()">로그아웃</button>
+      <div class="nav-user">
+        <span class="nav-user-email" id="user-email-display"></span>
+        <span class="nav-sync" id="sync-badge">동기화중</span>
+        <button class="nav-logout" onclick="logout()">로그아웃</button>
       </div>
     </div>
+  </div>
+  <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobile-menu">
+  <button class="nav-link" onclick="navTo('start');toggleMobileMenu()">문제 풀기</button>
+  <button class="nav-link" onclick="navTo('concept');toggleMobileMenu()">개념 정리</button>
+  <button class="nav-link" onclick="navToCert();toggleMobileMenu()">자격증 안내</button>
+  <button class="nav-link" onclick="navTo('stats');toggleMobileMenu()">오답 TOP 10</button>
+</div>
+
+<!-- START SCREEN -->
+<div id="start-screen" class="screen">
+  <div class="start-hero">
+    <h1>TPAC 자금세탁방지 CBT</h1>
+    <p>자금세탁방지 전문가 시험 대비 · 총 100문항<br>제1과목(1~50) · 제2과목(51~100)</p>
+  </div>
+
+  <div class="exam-group">
+    <div class="exam-group-label">제1회</div>
+    <div class="mode-btns">
+      <button class="mode-btn active" onclick="selectMode('all')">전체</button>
+      <button class="mode-btn" onclick="selectMode('sub1')">제1과목</button>
+      <button class="mode-btn" onclick="selectMode('sub2')">제2과목</button>
+      <button class="mode-btn" onclick="selectMode('wrong')">⚑ 내 오답</button>
+    </div>
+  </div>
+  <div class="exam-group">
+    <div class="exam-group-label">제2회</div>
+    <div class="mode-btns">
+      <button class="mode-btn" onclick="selectMode('exam2')">전체</button>
+      <button class="mode-btn" onclick="selectMode('exam2sub1')">제1과목</button>
+      <button class="mode-btn" onclick="selectMode('exam2sub2')">제2과목</button>
+    </div>
+  </div>
+
+  <div class="start-actions">
+    <button class="start-btn" onclick="startQuiz()">시험 시작 →</button>
+  </div>
+
+  <div class="disclaimer">
+    본 문제는 AI로 생성한 비공식 연습문제입니다. TPAC(자금세탁방지 업무능력 검정시험)은 한국금융연수원(KBI)에서 주관하는 시험이며, 본 자료는 한국금융연수원과 아무런 관련이 없습니다. 실제 기출문제가 아닙니다.<br>
+    문제 오류 제보: <a href="mailto:lsj001220@knu.ac.kr">lsj001220@knu.ac.kr</a>
   </div>
 </div>
 
 <!-- STATS SCREEN -->
-<div id="stats-screen" class="hidden">
-  <div class="stats-nav">
-    <h2>🔥 자주 틀리는 문제 TOP 10</h2>
-    <button onclick="hideStats()">← 돌아가기</button>
-  </div>
+<div id="stats-screen" class="hidden" style="max-width:820px;margin:0 auto;padding:82px 16px 40px;">
+  <div class="stats-title">🔥 자주 틀리는 문제 TOP 10</div>
   <div class="stats-body" id="stats-body">
     <div class="stats-loading">불러오는 중...</div>
   </div>
@@ -250,10 +343,6 @@
 
 <!-- CONCEPT SCREEN -->
 <div id="concept-screen" class="hidden">
-  <div class="concept-nav">
-    <h2>핵심 개념 정리</h2>
-    <button onclick="hideConceptScreen()">← 돌아가기</button>
-  </div>
   <div class="concept-tabs">
     <button class="concept-tab active" onclick="switchTab('tab1',this)">제도편</button>
     <button class="concept-tab" onclick="switchTab('tab2',this)">실무편</button>
@@ -435,7 +524,7 @@
 </div>
 
 <!-- QUIZ SCREEN -->
-<div id="quiz-screen" class="hidden">
+<div id="quiz-screen" class="screen hidden">
   <div class="quiz-header">
     <div class="top-row">
       <span class="section-badge" id="section-badge">제1과목</span>
@@ -456,7 +545,7 @@
 </div>
 
 <!-- RESULT SCREEN -->
-<div id="result-screen" class="hidden">
+<div id="result-screen" class="screen hidden">
   <div class="result-card">
     <div id="result-content"></div>
     <div id="review-section" class="hidden"></div>
@@ -704,7 +793,7 @@ function startQuiz() {
     [questionList[i],questionList[j]] = [questionList[j],questionList[i]];
   }
   currentIdx = 0; score = 0; results = [];
-  document.getElementById('start-screen').classList.add('hidden');
+  hideAllScreens();
   document.getElementById('quiz-screen').classList.remove('hidden');
   showQuestion();
 }
@@ -780,7 +869,7 @@ function showResult() {
 
   const total = questionList.length;
   const pct = Math.round((score/total)*100);
-  document.getElementById('quiz-screen').classList.add('hidden');
+  hideAllScreens();
   document.getElementById('result-screen').classList.remove('hidden');
 
   const grade = pct>=80?'합격권 🎉':pct>=60?'재도전 필요 💪':'집중 학습 필요 📚';
@@ -826,22 +915,40 @@ function hideReview() {
 }
 
 function restart() {
-  document.getElementById('result-screen').classList.add('hidden');
   document.getElementById('result-content').classList.remove('hidden');
   document.getElementById('review-section').classList.add('hidden');
-  document.getElementById('start-screen').classList.remove('hidden');
+  navTo('start');
 }
 
-function showConceptScreen() {
-  document.getElementById('start-screen').classList.add('hidden');
-  document.getElementById('concept-screen').classList.remove('hidden');
-  window.scrollTo(0, 0);
+const ALL_SCREENS = ['start-screen','stats-screen','concept-screen','quiz-screen','result-screen'];
+
+function hideAllScreens() {
+  ALL_SCREENS.forEach(id => document.getElementById(id).classList.add('hidden'));
 }
 
-function hideConceptScreen() {
-  document.getElementById('concept-screen').classList.add('hidden');
-  document.getElementById('start-screen').classList.remove('hidden');
+function navTo(name) {
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-nav="${name}"]`).forEach(b => b.classList.add('active'));
+  if (name === 'stats') { showStats(); return; }
+  hideAllScreens();
+  if (name === 'start') document.getElementById('start-screen').classList.remove('hidden');
+  else if (name === 'concept') { document.getElementById('concept-screen').classList.remove('hidden'); window.scrollTo(0,0); }
 }
+
+function navToCert() {
+  navTo('concept');
+  document.querySelectorAll('.concept-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.concept-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab3').classList.add('active');
+  document.querySelectorAll('.concept-tab')[2].classList.add('active');
+}
+
+function toggleMobileMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+function showConceptScreen() { navTo('concept'); }
+function hideConceptScreen() { navTo('start'); }
 
 function switchTab(tabId, btn) {
   document.querySelectorAll('.concept-section').forEach(s => s.classList.remove('active'));
@@ -931,7 +1038,7 @@ async function recordWrong(questionNumber) {
 }
 
 async function showStats() {
-  document.getElementById('start-screen').classList.add('hidden');
+  hideAllScreens();
   document.getElementById('stats-screen').classList.remove('hidden');
   document.getElementById('stats-body').innerHTML = '<div class="stats-loading">불러오는 중...</div>';
   window.scrollTo(0, 0);
@@ -965,8 +1072,7 @@ async function showStats() {
 }
 
 function hideStats() {
-  document.getElementById('stats-screen').classList.add('hidden');
-  document.getElementById('start-screen').classList.remove('hidden');
+  navTo('start');
 }
 </script>
 </body>
