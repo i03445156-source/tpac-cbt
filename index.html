@@ -1125,13 +1125,23 @@ const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ── AUTH ──────────────────────────────────────────────
 let currentUser = null;
 
-sbClient.auth.onAuthStateChange(async (event, session) => {
+async function initAuth() {
+  const { data: { session } } = await sbClient.auth.getSession();
   currentUser = session?.user ?? null;
   updateLoginUI();
-  if (currentUser && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
-    await syncWrongAnswers();
-  }
-});
+  if (currentUser) await syncWrongAnswers();
+
+  sbClient.auth.onAuthStateChange(async (event, session) => {
+    const prev = currentUser?.id;
+    currentUser = session?.user ?? null;
+    updateLoginUI();
+    if (currentUser && currentUser.id !== prev && event === 'SIGNED_IN') {
+      await syncWrongAnswers();
+    }
+  });
+}
+
+initAuth();
 
 function updateLoginUI() {
   const btnArea  = document.getElementById('login-btn-area');
