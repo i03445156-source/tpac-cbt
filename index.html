@@ -491,6 +491,7 @@
     <button class="concept-tab active" onclick="switchTab('tab1',this)">제도편</button>
     <button class="concept-tab" onclick="switchTab('tab2',this)">실무편</button>
     <button class="concept-tab" onclick="switchTab('tab3',this)">CTR 심화</button>
+    <button class="concept-tab" onclick="switchTab('tab4',this)">STR 심화</button>
   </div>
   <div class="concept-body">
 
@@ -682,6 +683,90 @@
         → 대출 상환: <span class="hl">대출 차주</span> 명의 / 전세자금대출 담보권 해지 현금 처리 시: <span class="hl">실제 현금 수취인(임대인)</span> 보고</div>
       <div class="concept-item warn"><b>Q6. 원화 현금 1,000만 원을 외화 예금에 입금 → CTR 대상?</b><br>
         → <span class="hl">대상</span>. 예금 종류(원화/외화)와 무관하게 창구에 유입된 <span class="hl">물리적 현금이 1,000만 원 이상</span>이면 합산</div>
+
+    </div>
+
+    <!-- STR 심화 -->
+    <div id="tab4" class="concept-section">
+
+      <h4>1. STR 기본 개념 및 역사</h4>
+      <div class="concept-item"><b>STR (Suspicious Transaction Report):</b> 수수된 재산이 불법재산이거나 ML·TF 행위를 하고 있다고 의심되는 <span class="hl">합당한 근거</span>가 있는 경우 FIU에 보고하는 제도 / <b>FATF R20</b></div>
+      <div class="concept-item warn"><b>판단 기준:</b> 추측과 확신 사이의 영역 — 객관적 수치보다 <span class="hl">업무 경험·전문성 기반 유추</span> / 전제범죄 = 자금세탁 이전에 벌어진 원인 범죄(밀수·뇌물·도박 등)</div>
+      <div class="concept-item warn"><b>보고기준 금액 역사:</b><br>
+        법 시행 당시 <span class="hl">5,000만 원</span> → 2004년 <span class="hl">2,000만 원</span> → 2010년 <span class="hl">1,000만 원</span> → <span class="hl">2013년 8월 기준금액 전격 폐기</span><br>
+        ※ 2013년 이후 단돈 1원이라도 의심 정황 있으면 보고 대상 / 2021년 VASP 의무 부과 / 2022년 트래블룰 도입 → 보고 건수 급증</div>
+
+      <h4>2. STR 대상 거래 및 의심 징후</h4>
+      <div class="concept-item warn"><b>필수 보고 대상 6가지:</b><br>
+        ① 불법재산 의심 합당한 근거<br>
+        ② 금융실명법 제3조 3항 위반(차명거래 등) 또는 ML·TF 의심<br>
+        ③ 범죄수익은닉규제법·공중협박자금조달금지법에 따라 수사기관 신고한 경우 → <span class="hl">STR도 반드시 병행 보고</span><br>
+        ④ CDD 수행 중 고객이 정보 제공 거부<br>
+        ⑤ 고객에게 알릴 경우 <span class="hl">Tipping-off 우려</span>가 합리적으로 판단되는 경우<br>
+        ⑥ CTR 기준(1,000만 원) 회피 목적 <span class="hl">분할거래(Smurfing)</span></div>
+      <div class="concept-item"><b>의심 정황 예시:</b> 거래금액이 고객 프로필 대비 과도 / 평소 잔액 대비 예금 회전 과도 / 과거 정상 패턴에서 완전히 벗어남<br>
+        → 금융회사는 <span class="hl">[거래자 정보 → 계좌 정보 → 거래 정보]</span> 순으로 기록·관리</div>
+
+      <h4>3. 내부 보고 및 통제 체계</h4>
+      <div class="concept-item warn"><b>내부 보고 경로 3가지:</b><br>
+        ① <b>표준형:</b> 영업점 직원 → 지점 책임자 → 본점 보고책임자(AML) → FIU<br>
+        ② <b>직통형:</b> 영업점 직원 → 본점 보고책임자 → FIU (보고서 작성 후 직접)<br>
+        ③ <b>구두형:</b> 영업점 직원 *(보고서 없이 구두)* → 본점 보고책임자 → FIU ※ 보고책임자 부담·책임 매우 큼</div>
+      <div class="concept-item warn"><b>보고책임자 의무:</b> 내부보고체제·업무지침 운용, 교육·연수 상시 점검 / 보고담당자 변경 등 변동 시 <span class="hl">FIU 시스템(금융정보 홈페이지)에 즉시 갱신</span></div>
+      <div class="concept-item warn"><b>지연보고 방지:</b> 내부 의심거래 보고는 발생일(또는 인지일)로부터 <span class="hl">3영업일 이내</span><br>
+        대책: STR 보고 건수 일별 대사(Reconciliation) / 시스템·프로세스 변경 시 사전 테스트 강화</div>
+
+      <h4>4. 정보누설금지(Tipping-off)와 면책·벌칙</h4>
+      <div class="concept-item warn"><b>정보누설금지 (특금법 제4조 제6항 / FATF R21):</b><br>
+        이유: 범죄자가 STR 사실 인지 시 자산 은닉·도주 우려<br>
+        범위: <span class="hl">사내 타 부서와 공유도 위법</span> — 감사부와도 공유 불가<br>
+        예외: AML·준법감시 부서 간 내부 공유 / 국외 본·지점 간 공유(글로벌 매트릭스)</div>
+      <div class="concept-item"><b>면책:</b> 선의(Good faith)로 STR 수행한 직원 → 오보여도 <span class="hl">민·형사상 책임 없음</span><br>
+        <b>증거채택 불가:</b> FIU가 수사기관에 제공한 금융거래정보는 <span class="hl">재판에서 증거 채택 불가 / 증언 거부 가능</span></div>
+      <div class="concept-item warn"><b>벌칙:</b>
+        <table class="cert-table" style="margin-top:8px;">
+          <thead><tr><th>위반 행위</th><th>처벌</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td class="left">허위 보고 또는 제3자 정보 누설</td><td>1년↓ 징역 또는 1,000만 원↓ 벌금</td><td>병과 가능, <b>양벌규정</b> (법인 대표자도 처벌)</td></tr>
+            <tr><td class="left">STR 보고 의무 위반(미보고)</td><td>3,000만 원↓ 과태료</td><td>행정처분</td></tr>
+          </tbody>
+        </table></div>
+
+      <h4>5. 제도적 한계 및 후속 조치</h4>
+      <div class="concept-item warn"><b>현재 문제점:</b> CDD 거부 시에만 거래 거절 가능 / STR 대상이라고 임의로 거절하면 <span class="hl">Tipping-off 조항과 충돌</span> 우려 → 적극 대응 어려움</div>
+      <div class="concept-item"><b>FATF 대응:</b> R4(몰수·잠정조치)·R38(국제사법공조 동결·몰수) 개정 추진 / '유죄판결 없는 몰수' 및 <span class="hl">의심거래 발생 시 즉각적인 거래중지제도</span> 도입 추진</div>
+      <div class="concept-item"><b>실무 후속 조치:</b> 고위험 모니터링 대상 등재 / 내부 요주의 명단(Watch List) 등재 / CDD 조기 재점검</div>
+
+      <h4>6. STR 룰(Rule) 도입 및 관리 프레임워크</h4>
+      <div class="concept-item warn"><b>탐지 원칙:</b> <span class="hl">IF-THEN 원칙</span> (조건 A → 탐지 B)<br>
+        방식: <span class="hl">룰(Rule) 방식</span>(조건 기반 시나리오) + <span class="hl">스코어링(Scoring) 방식</span>(가중치 점수화) 혼용</div>
+      <div class="concept-item warn"><b>룰 관리 프레임워크 핵심 요소:</b><br>
+        ① <b>세그멘테이션(Segmentation):</b> 고객을 유사 그룹으로 분류 → 모니터링 자원 집중<br>
+        ② <b>DQMF (Data Quality Management Framework):</b> 원천 데이터 왜곡 방지<br>
+        &nbsp;&nbsp;&nbsp;· <span class="hl">리콘실리에이션(Reconciliation):</span> 시스템 간 이동 시 건수·총액 일치 검증<br>
+        &nbsp;&nbsp;&nbsp;· <span class="hl">프로파일링(Profiling):</span> 사전 정의된 코드 외 쓰레기 값 확인<br>
+        &nbsp;&nbsp;&nbsp;· 오류 발견 시 자금세탁방지 시스템이 아닌 <span class="hl">원천 데이터 자체를 수정</span><br>
+        ③ <b>전략적 튜닝(Tactical Tuning):</b> 리스크 프로파일 최적화·스코어링 모형 고도화</div>
+      <div class="concept-item warn"><b>임계치(Threshold) 튜닝 4단계:</b><br>
+        [1단계] STR 룰 복제 → [2단계] 초기 임계치 설정 → [3단계] <span class="hl">ATL/BTL 검정</span> → [4단계] 최종 임계치 설정·적용<br>
+        · <b>ATL(Above-The-Line):</b> 임계치 이상 구간 샘플링 검정<br>
+        · <b>BTL(Below-The-Line):</b> 임계치 이하 구간 샘플링 검정<br>
+        → 기준 상향 시에도 <span class="hl">과탐지(False Positive)를 줄이고 탐지 성능 유지</span>할 수 있는지 검증</div>
+
+      <h4>7. 조사·작성 실무 및 지적사항 / 유권해석</h4>
+      <div class="concept-item warn"><b>내부 조사 3단계:</b> 조사자(영업점/실무자) → 점검자(본점 AML 팀장급) → 보고책임자(최종 승인·FIU 보고)<br>
+        '혐의 없음' 종결 시 종결 처리 기준 必, 보고서에 <span class="hl">과거 자금세탁 관련 정보·거래자 정보·거래 내용·결론</span> 상세 기술</div>
+      <div class="concept-item"><b>보고서 작성 원칙:</b> 육하원칙 기술 / 창구 정황(고객 태도·거동) 포함 / 관련인(차명 의심자·송금 상대방) 묶어서 보고 / 평소 패턴과의 차이·자금 출처 규명 / 전신송금 시 송금인·수취인 정보 적극 반영</div>
+      <div class="concept-item warn"><b>감독당국 주요 지적사항:</b><br>
+        STR 지연보고 및 절차 미흡 / 의심거래 추출 기준(룰/시나리오) 운영 불합리 / 혐의 없음 종결 건 검토 불철저 / FDS-TMS 연계 미흡 / 수사기관 고발·신고 건 STR 연계 누락 / 가상자산 의심거래 보고 운영 불합리</div>
+      <div class="concept-item warn"><b>핵심 유권해석:</b><br>
+        · <span class="hl">반복 의심 고객 강제해지 불가:</span> 여러 차례 STR 보고 고객이라도 임의 강제 거래종결 조항 없음<br>
+        · <span class="hl">Global Exit List 등록 허용:</span> STR 사실 직접 유출 아닌 내부 리스크 관리 목적 등재는 위법 아님<br>
+        · <span class="hl">보험사기 → STR 필수:</span> 보험사기 혐의로 수사기관 의뢰 시 전제범죄 해당 → STR 반드시 보고<br>
+        · <span class="hl">반복 추출 보고 주기:</span> 동일 고객·동일 유형 반복 추출 시 매 건마다 불필요 → 일정 간격(예: 1주일)으로 취합 보고 가능<br>
+        · <span class="hl">상품권 업자 증빙 거부:</span> EDD/CDD 증빙 거부 시 거래 중단<br>
+        · <span class="hl">변호사·세무사:</span> 현행 특금법상 보고 의무자 아님<br>
+        · <span class="hl">선의의 차명계좌:</span> 불법 목적 아닌 순수 선의(예: 문중 회비 계좌) → STR 대상 제외 가능</div>
 
     </div>
 
