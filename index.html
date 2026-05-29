@@ -676,17 +676,6 @@
   </div>
 </div>
 
-<!-- 오류 신고 모달 -->
-<div class="report-modal hidden" id="report-modal">
-  <div class="report-modal-box">
-    <h3>⚑ 문제 오류 신고 <span id="report-qnum" style="color:var(--text-muted);font-weight:400;font-size:0.9rem;"></span></h3>
-    <textarea id="report-input" placeholder="어떤 오류인지 설명해주세요. (예: 정답이 잘못됨, 보기 오탈자 등)"></textarea>
-    <div class="report-modal-actions">
-      <button class="report-cancel" onclick="closeReportModal()">취소</button>
-      <button class="report-send" onclick="submitReport()">신고</button>
-    </div>
-  </div>
-</div>
 
 <!-- QUIZ SCREEN -->
 <div id="quiz-screen" class="screen hidden">
@@ -706,7 +695,6 @@
     <div class="choices" id="choices"></div>
     <div class="explanation" id="explanation"></div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 문제 →</button>
-    <button class="report-btn" id="report-btn" onclick="openReportModal()">⚑ 문제 오류 신고</button>
   </div>
 </div>
 
@@ -1249,7 +1237,8 @@ function hideStats() {
 }
 
 // ── COMMENTS ─────────────────────────────────────
-let currentReportQi = null;
+
+
 
 async function loadComments() {
   const list = document.getElementById('comment-list');
@@ -1306,30 +1295,6 @@ async function deleteComment(id) {
   loadComments();
 }
 
-function openReportModal() {
-  const qi = questionList[currentIdx];
-  currentReportQi = qi;
-  document.getElementById('report-qnum').textContent = `(문제 ${qi + 1}번)`;
-  document.getElementById('report-input').value = '';
-  document.getElementById('report-modal').classList.remove('hidden');
-}
-
-function closeReportModal() {
-  document.getElementById('report-modal').classList.add('hidden');
-}
-
-async function submitReport() {
-  if (!currentUser) { alert('로그인 후 신고할 수 있어요.'); closeReportModal(); return; }
-  const content = document.getElementById('report-input').value.trim();
-  if (!content) { alert('내용을 입력해주세요.'); return; }
-  const nickname = currentUser.email.split('@')[0];
-  await sbClient.from('comments').insert({
-    user_id: currentUser.id, nickname, content,
-    question_id: currentReportQi + 1
-  });
-  closeReportModal();
-  alert('신고해주셔서 감사합니다!');
-}
 
 </script>
 </body>
