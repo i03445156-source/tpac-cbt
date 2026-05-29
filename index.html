@@ -346,7 +346,6 @@
   <div class="concept-tabs">
     <button class="concept-tab active" onclick="switchTab('tab1',this)">제도편</button>
     <button class="concept-tab" onclick="switchTab('tab2',this)">실무편</button>
-    <button class="concept-tab" onclick="switchTab('tab3',this)">자격증 안내</button>
   </div>
   <div class="concept-body">
 
@@ -456,70 +455,75 @@
       <div class="concept-item"><b>임계치:</b> STR 룰을 통해 생성되는 alert 기준점 / <b>임계치 튜닝:</b> 룰의 효과성·효율성 극대화 과정</div>
     </div>
 
-    <!-- 자격증 안내 -->
-    <div id="tab3" class="concept-section">
+  </div>
+</div>
 
-      <h4>AML 핵심 자격증 3종 비교</h4>
-      <div class="concept-item warn"><b>TPAC (국가공인):</b> 한국금융연수원 주관. 국내 금융권 취업·승진 시 가장 실속 있는 자격. <span class="hl">1등급 이상 취득 시 최고 4.0점 인정</span></div>
-      <div class="concept-item warn"><b>CAMS (국제공인):</b> ACAMS 주관. 글로벌 최고 권위. 외국계 금융기관·대형 로펌·본점 컴플라이언스 부서에서 우대. <span class="hl">양성 3.0 / 교육실적 3.5점</span></div>
-      <div class="concept-item warn"><b>KCAMS (전문민간):</b> 새금융사회연구소 주관. 국내 법령 및 실무 프로세스 특화. <span class="hl">양성·교육실적 각 3.0점 인정</span></div>
+<!-- CERT SCREEN -->
+<div id="cert-screen" class="hidden" style="max-width:820px;margin:0 auto;padding:82px 16px 40px;">
+  <div style="margin-bottom:20px;">
+    <div style="font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:4px;">자금세탁방지 자격증 안내</div>
+    <div style="font-size:0.88rem;color:var(--text-muted);">AML 관련 주요 자격증 비교 및 TPAC 시험 일정</div>
+  </div>
 
-      <h4>전문가 양성 실적 점수 (자격 보유)</h4>
+  <div style="background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:7px 13px;border-radius:8px;margin-bottom:14px;">AML 핵심 자격증 3종 비교</div>
+    <div class="concept-item warn"><b>TPAC (국가공인):</b> 한국금융연수원 주관. 국내 금융권 취업·승진 시 가장 실속 있는 자격. <span class="hl">1등급 이상 취득 시 최고 4.0점 인정</span></div>
+    <div class="concept-item warn"><b>CAMS (국제공인):</b> ACAMS 주관. 글로벌 최고 권위. 외국계 금융기관·대형 로펌·본점 컴플라이언스 부서에서 우대. <span class="hl">양성 3.0 / 교육실적 3.5점</span></div>
+    <div class="concept-item warn"><b>KCAMS (전문민간):</b> 새금융사회연구소 주관. 국내 법령 및 실무 프로세스 특화. <span class="hl">양성·교육실적 각 3.0점 인정</span></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div style="background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);">
+      <div style="font-size:0.8rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:7px 13px;border-radius:8px;margin-bottom:12px;">전문가 양성 실적 (자격 보유)</div>
       <table class="cert-table">
-        <thead>
-          <tr><th>#</th><th>자격명</th><th>주관기관</th><th>인정 점수</th></tr>
-        </thead>
+        <thead><tr><th>#</th><th>자격명</th><th>주관기관</th><th>점수</th></tr></thead>
         <tbody>
           <tr><td>1</td><td class="left"><b>TPAC 1+, 1등급</b></td><td>한국금융연수원</td><td><b>4.0</b></td></tr>
           <tr><td>2</td><td class="left">TPAC 2, 3등급</td><td>한국금융연수원</td><td>3.0</td></tr>
           <tr><td>3</td><td class="left"><b>CAMS</b></td><td>ACAMS</td><td>3.0</td></tr>
           <tr><td>4</td><td class="left"><b>KCAMS</b></td><td>새금융사회연구소</td><td>3.0</td></tr>
-          <tr><td>5</td><td class="left">자금세탁방지 핵심요원(전문)</td><td>한국금융연수원</td><td>2.5</td></tr>
-          <tr><td>6</td><td class="left">자금세탁방지 핵심요원(기초)</td><td>한국금융연수원</td><td>2.0</td></tr>
-          <tr><td>7</td><td class="left">영업점 컴플라이언스 오피서</td><td>한국금융연수원</td><td>1.0</td></tr>
+          <tr><td>5</td><td class="left">핵심요원(전문)</td><td>한국금융연수원</td><td>2.5</td></tr>
+          <tr><td>6</td><td class="left">핵심요원(기초)</td><td>한국금융연수원</td><td>2.0</td></tr>
+          <tr><td>7</td><td class="left">컴플라이언스 오피서</td><td>한국금융연수원</td><td>1.0</td></tr>
         </tbody>
       </table>
-
-      <h4>전문교육 실적 점수 (교육 이수)</h4>
+    </div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);">
+      <div style="font-size:0.8rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:7px 13px;border-radius:8px;margin-bottom:12px;">전문교육 실적 (교육 이수)</div>
       <table class="cert-table">
-        <thead>
-          <tr><th>#</th><th>교육과정·자격명</th><th>주관기관</th><th>실적 점수</th></tr>
-        </thead>
+        <thead><tr><th>#</th><th>교육과정·자격명</th><th>주관기관</th><th>점수</th></tr></thead>
         <tbody>
           <tr><td>1</td><td class="left"><b>CAMS</b></td><td>ACAMS</td><td><b>3.5</b></td></tr>
-          <tr><td>2</td><td class="left">자금세탁방지 핵심요원(전문)</td><td>한국금융연수원</td><td><b>3.5</b></td></tr>
+          <tr><td>2</td><td class="left">핵심요원(전문)</td><td>한국금융연수원</td><td><b>3.5</b></td></tr>
           <tr><td>3</td><td class="left"><b>KCAMS</b></td><td>새금융사회연구소</td><td>3.0</td></tr>
-          <tr><td>4</td><td class="left">자금세탁방지 핵심요원(기초)</td><td>한국금융연수원</td><td>3.0</td></tr>
-          <tr><td>5</td><td class="left">영업점 컴플라이언스 오피서</td><td>한국금융연수원</td><td>3.0</td></tr>
+          <tr><td>4</td><td class="left">핵심요원(기초)</td><td>한국금융연수원</td><td>3.0</td></tr>
+          <tr><td>5</td><td class="left">컴플라이언스 오피서</td><td>한국금융연수원</td><td>3.0</td></tr>
         </tbody>
       </table>
-      <div class="concept-item" style="font-size:0.82rem; color:#718096;">※ 각 분류 내 점수는 중복 합산 불가 — 가장 높은 점수 1개만 인정</div>
-
-      <h4>TPAC 시험 일정 (2025년)</h4>
-      <table class="cert-table">
-        <thead>
-          <tr><th>회차</th><th>응시료</th><th>시험일</th><th>합격자 발표</th><th>접수 기간</th><th>시행 지역</th><th>상태</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>제5회</b></td><td>66,000원</td><td>05.30 (토)</td><td>06.12 (금)</td>
-            <td>04.21~04.28</td><td>서울·대전·대구·부산·광주</td>
-            <td><span class="badge-done">접수마감</span></td>
-          </tr>
-          <tr>
-            <td><b>제6회</b></td><td>66,000원</td><td>09.19 (토)</td><td>10.02 (금)</td>
-            <td>08.11~08.18</td><td>서울·대전·대구·부산·광주</td>
-            <td><span class="badge-open">접수예정</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="cert-tip">
-        <b>접수 기간 주의!</b> TPAC 접수 기간은 <b>약 1주일</b>로 매우 짧습니다. 제6회 접수는 <b>2025년 8월 11일(화)</b>부터 시작되니 미리 한국금융연수원(KBI) 홈페이지에서 일정을 확인해 두세요.
-      </div>
-
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">※ 각 분류 내 중복 합산 불가 — 최고 점수 1개만 인정</div>
     </div>
+  </div>
 
+  <div style="background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--primary);background:var(--primary-light);padding:7px 13px;border-radius:8px;margin-bottom:12px;">TPAC 시험 일정 (2025년)</div>
+    <table class="cert-table">
+      <thead><tr><th>회차</th><th>응시료</th><th>시험일</th><th>합격자 발표</th><th>접수 기간</th><th>시행 지역</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>제5회</b></td><td>66,000원</td><td>05.30 (토)</td><td>06.12 (금)</td>
+          <td>04.21~04.28</td><td>서울·대전·대구·부산·광주</td>
+          <td><span class="badge-done">접수마감</span></td>
+        </tr>
+        <tr>
+          <td><b>제6회</b></td><td>66,000원</td><td>09.19 (토)</td><td>10.02 (금)</td>
+          <td>08.11~08.18</td><td>서울·대전·대구·부산·광주</td>
+          <td><span class="badge-open">접수예정</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="cert-tip" style="margin-top:14px;">
+      <b>접수 기간 주의!</b> TPAC 접수 기간은 <b>약 1주일</b>로 매우 짧습니다. 제6회 접수는 <b>2025년 8월 11일(화)</b>부터 시작되니 미리 한국금융연수원(KBI) 홈페이지에서 일정을 확인해 두세요.
+    </div>
   </div>
 </div>
 
@@ -920,7 +924,7 @@ function restart() {
   navTo('start');
 }
 
-const ALL_SCREENS = ['start-screen','stats-screen','concept-screen','quiz-screen','result-screen'];
+const ALL_SCREENS = ['start-screen','stats-screen','concept-screen','cert-screen','quiz-screen','result-screen'];
 
 function hideAllScreens() {
   ALL_SCREENS.forEach(id => document.getElementById(id).classList.add('hidden'));
@@ -933,15 +937,10 @@ function navTo(name) {
   hideAllScreens();
   if (name === 'start') document.getElementById('start-screen').classList.remove('hidden');
   else if (name === 'concept') { document.getElementById('concept-screen').classList.remove('hidden'); window.scrollTo(0,0); }
+  else if (name === 'cert') { document.getElementById('cert-screen').classList.remove('hidden'); window.scrollTo(0,0); }
 }
 
-function navToCert() {
-  navTo('concept');
-  document.querySelectorAll('.concept-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.concept-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab3').classList.add('active');
-  document.querySelectorAll('.concept-tab')[2].classList.add('active');
-}
+function navToCert() { navTo('cert'); }
 
 function toggleMobileMenu() {
   document.getElementById('mobile-menu').classList.toggle('open');
