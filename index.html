@@ -483,6 +483,7 @@
   <div class="concept-tabs">
     <button class="concept-tab active" onclick="switchTab('tab1',this)">제도편</button>
     <button class="concept-tab" onclick="switchTab('tab2',this)">실무편</button>
+    <button class="concept-tab" onclick="switchTab('tab3',this)">CTR 심화</button>
   </div>
   <div class="concept-body">
 
@@ -590,6 +591,91 @@
       <div class="concept-item warn"><b>⚠ 시한 비교:</b> STR = <span class="hl">3영업일(Business Day)</span> / CTR = <span class="hl">30일(Calendar Day·자연일)</span> — 영업일 vs 자연일 구분 필수</div>
       <div class="concept-item warn"><b>Tipping-off 금지:</b> 보고책임자 보고 체계 외 누구에게도 STR 정보 공유 금지 (<span class="hl">회사 내 다른 부서·내부감사도 불가</span>)</div>
       <div class="concept-item"><b>임계치:</b> STR 룰을 통해 생성되는 alert 기준점 / <b>임계치 튜닝:</b> 룰의 효과성·효율성 극대화 과정</div>
+    </div>
+
+    <!-- CTR 심화 -->
+    <div id="tab3" class="concept-section">
+
+      <h4>제1장. CTR 제도의 개요 및 보고 기준</h4>
+      <div class="concept-item"><b>CTR(Cash Transaction Report) 정의:</b> 동일 금융회사에서 동일인 명의로 <span class="hl">1거래일 동안 기준금액 이상의 현금</span>을 지급하거나 영수한 경우 FIU에 자동 보고하는 제도</div>
+      <div class="concept-item warn"><b>핵심 보고 기준 4가지:</b><br>
+        ① 기준금액: <span class="hl">1,000만 원 이상</span> (원화·외화 불문)<br>
+        ② 산정 단위: <span class="hl">1거래일</span> 기준, <span class="hl">동일 금융회사(점포별 합산)</span><br>
+        ③ 거래 형태: 오직 <span class="hl">현금의 물리적 지급·영수</span>만 합산 (대체거래·계좌이체 제외)<br>
+        ④ 지급과 영수는 <span class="hl">각각 독립 합산</span> (상계 불가)</div>
+      <div class="concept-item"><b>거래 일자 특례:</b> 전일자 거래와 마감 후 거래가 얽힌 경우 <span class="hl">실제 발생한 당일</span> 기준으로 합산</div>
+      <div class="concept-item"><b>비대면 거래:</b> 온·오프라인 불문, 현금 영수·지급이 발생하면 모두 합산 대상</div>
+      <div class="concept-item warn"><b>실명 합산 기준:</b><br>
+        · 개인: 성명 + 주민등록번호<br>
+        · 법인: 법인명 + 사업자등록번호<br>
+        · 외국인: <span class="hl">실명증표별 구분 합산</span> (여권/외국인등록증을 각각 쓰면 시스템상 별개 처리 → STR 적극 검토)<br>
+        · 공동명의 예금: 예금주로 등록된 자 각각의 이름으로 합산</div>
+
+      <h4>제2장. 거래 유형별 보고의무 주체 및 거래상대방</h4>
+      <table class="cert-table">
+        <thead><tr><th>#</th><th>거래 유형</th><th>보고의무 주체</th><th>거래상대방(보고 대상)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="left">계좌 거래</td><td>계좌 개설 금융회사</td><td class="left"><b>계좌 명의인</b></td></tr>
+          <tr><td>2</td><td class="left">무통장 방식 (송금 등)</td><td>송금 금융회사</td><td class="left"><b>송금 의뢰인</b></td></tr>
+          <tr><td>3</td><td class="left">대출 실행 및 상환</td><td>대출 실행·상환 금융회사</td><td class="left"><b>대출 차주</b></td></tr>
+          <tr><td>4</td><td class="left">자동화기기(ATM/CD) 거래</td><td>계좌 보유 금융회사</td><td class="left"><b>계좌 명의인</b></td></tr>
+          <tr><td>5</td><td class="left">자기앞수표 지급</td><td>수표 지급 금융회사</td><td class="left"><b>지급 제시인</b> (수표 내고 현금 수령한 자)</td></tr>
+          <tr><td>6</td><td class="left">약속어음·당좌수표 지급</td><td>어음·수표 지급 금융회사</td><td class="left"><b>지급 제시인</b></td></tr>
+        </tbody>
+      </table>
+      <div class="concept-item warn"><b>다수 금융회사 관련 시:</b> <span class="hl">최종적으로 현금 지급·영수를 직접 처리한 금융회사</span>가 보고 의무를 짐</div>
+
+      <h4>제3장. 보고 대상 제외 및 합산 제외 (암기 필수)</h4>
+      <div class="concept-item"><b>특금법상 금융거래 아닌 것 (원천 제외):</b> 상품권, 복권, 공연·입장권, 교통카드 충전, 수입인지 판매 대금</div>
+      <div class="concept-item warn"><b>합산 거래 예외 (비보고 대상):</b><br>
+        · <span class="hl">100만 원 이하 단건</span>: 원화 송금, 외화 매입·매각, 선불카드 거래<br>
+        · 법원 관련: 법원공탁금, 정부·법원 보관금, 송달료<br>
+        · 세금·지로: 공과금 수납액, 은행 지로장표 거래<br>
+        · <span class="hl">수수료</span>: 중도해지·중도상환·제증명서 발급 수수료 등 (<b>주의: 이자는 합산 대상, 수수료는 제외</b>)</div>
+      <div class="concept-item warn"><b>공과금 수납 실명확인:</b> 납부고지서 무통장 형태라도 <span class="hl">100만 원 이상이면 실명확인 필요</span> / 대리인 거래 시 <span class="hl">창구에 온 대리인의 실명 확인</span></div>
+
+      <h4>제4장. CTR 보고 면제 대상 및 변천</h4>
+      <div class="concept-item warn"><b>현행 보고 면제 대상:</b><br>
+        ① 금융회사 간 거래<br>
+        ② 국가, 지방자치단체, 대통령령으로 지정한 공공기관<br>
+        ③ 자금세탁 위험성이 낮은 일상적 거래<br>
+        <span class="hl">※ 카지노 사업자 및 자금세탁·테러자금 고위험자와의 거래는 절대 면제 불가</span></div>
+      <div class="concept-item warn"><b>⚠ 과거 면제 → 현재 보고 대상으로 전환된 기관 (혼동 주의):</b><br>
+        일반 공공기관 / 정부출연연구기관 및 연구소 / 과학기술분야 출연연구기관 / 지방공기업 / FIU장이 지정하는 자</div>
+
+      <h4>제5장. 보고 절차 및 정정·정보제공 제도</h4>
+      <div class="concept-item warn"><b>보고 기한:</b> 사유 발생일로부터 <span class="hl">30일 이내</span> · <span class="hl">초일불산입</span> 원칙 · 말일이 공휴일이면 다음 첫 평일</div>
+      <div class="concept-item"><b>보고 필수 항목:</b> ① 보고대상 명칭·소재지 ② 현금 지급·영수 장소 ③ 거래 상대방 ④ 지급·영수 구체적 내용 ⑤ FIU장이 지정한 사항</div>
+      <div class="concept-item"><b>오보고 취소·정정:</b> 입력 오류 발견 시 사유를 명시하여 기존 보고 취소 (자체 점검 발견 또는 FIU 요구)</div>
+      <div class="concept-item warn"><b>CTR 정보 제공 확대:</b> 과거 검·경 중심 → 특금법 개정으로 <span class="hl">관세청·국세청 등에도 CTR 정보 제공</span> (과세 자료 활용 → 고객 민원 유의)</div>
+      <div class="concept-item warn"><b>제공사실 통보:</b> 정부24 통해 명의인에게 통보 / FIU가 SMS 발신 → 미도달 시 <span class="hl">등기우편</span> 발송<br>
+        <b>★ STR vs CTR 핵심 차이:</b> STR은 <span class="hl">Tipping-off 금지</span> 적용 / CTR은 <span class="hl">Tipping-off 미적용</span> (제공사실 통보 제도 존재)</div>
+
+      <h4>제6장. 위반 시 벌칙 및 주요 지적 사례</h4>
+      <div class="concept-item warn"><b>벌칙:</b><br>
+        · <span class="hl">거짓 보고 (형사처벌):</span> 1년 이하 징역 또는 1,000만 원 이하 벌금, 병과 가능<br>
+        · <span class="hl">지연·미보고 (과태료):</span> 3,000만 원 이하 (감경·가중 가능, 최고 3,000만 원 초과 불가)</div>
+      <div class="concept-item warn"><b>검사 지적 유형:</b> <span class="hl">지연보고 57%</span> · <span class="hl">미보고 33%</span><br>
+        · 시스템 교체 시 CTR 추출 조건 점검 소홀 → 대규모 지연보고<br>
+        · 담당 직원 임의 제외 처리<br>
+        · ATM 다회 분할 입출금 합산 누락<br>
+        · 900만원·950만원 분할거래 징후 파악 후 보고 미이행 (STR도 미조치)</div>
+
+      <h4>제7장. 유권해석 및 실무 Q&A</h4>
+      <div class="concept-item warn"><b>Q1. 신탁·미경과 보험료 반환도 CTR 대상인가?</b><br>
+        → 신탁은 특금법상 금융거래 해당 → <span class="hl">CTR 대상</span> / 보험회사가 현금으로 보험료 반환 시도 <span class="hl">CTR 대상</span></div>
+      <div class="concept-item warn"><b>Q2. 신용카드 정산대금·가족카드 이용액 합산은?</b><br>
+        → 신용카드 정산금은 계좌 간 이체 → <span class="hl">물리적 현금 아니므로 CTR 대상 아님</span> / 현금으로 카드대금 수납 시 <span class="hl">가족 신용카드는 주카드 명의자 명의로 합산</span></div>
+      <div class="concept-item warn"><b>Q3. 양도성예금증서(CD) 해지 시 누구 명의?</b><br>
+        → CD는 무기명이 원칙 → <span class="hl">최종 소지인(해지의뢰인)의 명의</span>로 합산</div>
+      <div class="concept-item warn"><b>Q4. 현금 900만 원 + 이체 100만 원 = CTR 대상?</b><br>
+        → 동시에 [현금 900만 + 이체 100만]: 물리적 현금 900만 → <span class="hl">CTR 대상 아님</span><br>
+        → 같은 날 현금 900만 입금 후 다시 현금 100만 재입금: 합계 1,000만 → <span class="hl">CTR 대상</span> (고의 분할 시 STR도 검토)</div>
+      <div class="concept-item warn"><b>Q5. 대출금 상환·전세자금대출 담보권 해지 시 보고 명의?</b><br>
+        → 대출 상환: <span class="hl">대출 차주</span> 명의 / 전세자금대출 담보권 해지 현금 처리 시: <span class="hl">실제 현금 수취인(임대인)</span> 보고</div>
+      <div class="concept-item warn"><b>Q6. 원화 현금 1,000만 원을 외화 예금에 입금 → CTR 대상?</b><br>
+        → <span class="hl">대상</span>. 예금 종류(원화/외화)와 무관하게 창구에 유입된 <span class="hl">물리적 현금이 1,000만 원 이상</span>이면 합산</div>
+
     </div>
 
   </div>
