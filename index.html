@@ -1120,7 +1120,13 @@ function switchTab(tabId, btn) {
 
 const SUPABASE_URL = 'https://xzxgrbkblgxdeumspmsc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable__OrUMm5v8YWU9ePqHHN41A_C4w5QK97';
-const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+    persistSession: true,
+  }
+});
 
 // ── AUTH ──────────────────────────────────────────────
 let currentUser = null;
