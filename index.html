@@ -108,6 +108,17 @@
     transition: all 0.15s; white-space: nowrap;
   }
   .nav-bank-link:hover { background: rgba(96,165,250,0.22); color: #93c5fd; }
+  .notice-banner {
+    position: fixed; top: 58px; left: 0; right: 0; z-index: 99;
+    background: #854d0e; border-bottom: 1px solid #92400e;
+    padding: 9px 20px; display: flex; align-items: center; gap: 10px;
+    font-size: 0.83rem; color: #fef3c7;
+  }
+  .notice-banner strong { color: #fde68a; }
+  .notice-banner .notice-badge {
+    background: #f59e0b; color: #1c1917; padding: 2px 8px;
+    border-radius: 10px; font-size: 0.75rem; font-weight: 800; white-space: nowrap;
+  }
   .nav-user {
     display: flex; align-items: center; gap: 8px;
     font-size: 0.82rem; color: rgba(255,255,255,0.7);
@@ -136,7 +147,7 @@
   }
 
   /* ── SCREENS ─────────────────────────── */
-  .screen { max-width: 820px; margin: 0 auto; padding: 24px 16px 40px; padding-top: 82px; }
+  .screen { max-width: 820px; margin: 0 auto; padding: 24px 16px 40px; padding-top: 122px; }
   .hidden { display: none; }
 
   /* ── START SCREEN ────────────────────── */
@@ -430,6 +441,12 @@
   <button class="nav-link" onclick="navToCert();toggleMobileMenu()">자격증 안내</button>
   <button class="nav-link" onclick="navTo('stats');toggleMobileMenu()">오답 TOP 10</button>
   <button class="nav-link" onclick="navTo('feedback');toggleMobileMenu()">건의함</button>
+</div>
+
+<!-- 공지 배너 -->
+<div class="notice-banner">
+  <span class="notice-badge">공지</span>
+  <span><strong>한국 자금세탁방지 능력시험 교재가 개편</strong>되어 문제 및 개념 내용 업데이트 예정입니다.</span>
 </div>
 
 <!-- START SCREEN -->
